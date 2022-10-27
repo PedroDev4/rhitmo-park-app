@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Estacionamento {
+  id    String @id @default(uuid())
+  nome  String @unique
+  vagas Vaga[]
+
+  @@map("estacionamento")
+}
+
+model Vaga {
+  id       String  @id @default(uuid())
+  tipoVaga String
+  ocupada  Boolean @default(false)
+
+  Estacionamento   Estacionamento? @relation(fields: [estacionamentoId], references: [id])
+  estacionamentoId String?
+}
